@@ -1,6 +1,6 @@
+/*Programacion principal de GUS-Micromouse*/
 #include <stdio.h>
 #include "pico/stdlib.h"
-
 
 int main()
 {
