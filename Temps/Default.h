@@ -1,5 +1,4 @@
 /*Libreria encargada de asignar pines a los componentes y valores de configuración*/
-
 #ifndef DEFAULF_H
 #define DEFAULF_H
 //Definición de pines para sensor infrarrojo
@@ -19,4 +18,8 @@
 //Definicion de pines para puente h
 #define MOTOR_LEFT_DIR_PIN 7
 #define MOTOR_RIGHT_DIR_PIN 8
+//De valores de configuracion estandar para el PWM de ambos motores
+#define PWM_FREQUENCY 1000 // Frecuencia de PWM en Hz
+#define PWM_MAX_DUTY_CYCLE 65535 // Valor máximo de ciclo de trabajo para 16 bits
+
 #endif

@@ -35,7 +35,11 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(GUS-Micromouse GUS-Micromouse.c )
+file(GLOB SOURCES 
+    "*.c"
+    "Libreria/*.c"
+)
+add_executable(GUS-Micromouse ${SOURCES})
 
 pico_set_program_name(GUS-Micromouse "GUS-Micromouse")
 pico_set_program_version(GUS-Micromouse "0.1")

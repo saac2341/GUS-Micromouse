@@ -5,10 +5,8 @@
 #include "Default.h"
 #include <stdbool.h>
 //Estas librerias son para el acelerometro/giroscopio MPU6050, se pueden cambiar por otras dependiendo del modelo que se use
-#include "Wire.h"
-#include "MPU6050.h"
-#include "I2Cdev.h"
 //Descripcion de las funciones que se van a usar para el acelerometro/giroscopio
+
 void acelerometro_init();
 void acelerometro_leer(float* ax, float* ay, float* az, float*gx, float* gy, float* gz);
 
