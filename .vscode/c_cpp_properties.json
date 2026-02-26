@@ -7,15 +7,12 @@
                 "${userHome}/.pico-sdk/sdk/2.2.0/**",
                 "${workspaceFolder}/Temps",
                 "${workspaceFolder}/Libreria",
-                "C:/Users/Pc/.pico-sdk/sdk/2.2.0/src/common/pico_stdlib_headers/include",
-                "C:\\Users\\Pc\\AppData\\Local\\Arduino15\\libraries",
-                "C:\\Users\\<TuUsuario>\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\<version>\\cores\\arduino",
-                "C:/Users/Pc/.pico-sdk/sdk/2.2.0/src/rp2_common/hardware_i2c/include",
-                "C:/Users/Pc/.pico-sdk/sdk/2.2.0/src/host/pico_stdio/include",
-                "C:/Users/Pc/.pico-sdk/sdk/2.2.0/src/common/pico_time/include"
+                "${userHome}/.pico-sdk/sdk/2.2.0/src/common/pico_stdlib_headers/include",
+                "${userHome}/.pico-sdk/sdk/2.2.0/src/rp2_common/hardware_i2c/include",
+                "${userHome}/.pico-sdk/sdk/2.2.0/src/host/pico_stdio/include",
+                "${userHome}/.pico-sdk/sdk/2.2.0/src/common/pico_time/include"
             ],
             "forcedInclude": [
-                "${workspaceFolder}/build/generated/pico_base/pico/config_autogen.h",
                 "${userHome}/.pico-sdk/sdk/2.2.0/src/common/pico_base_headers/include/pico.h"
             ],
             "defines": [],
@@ -26,6 +23,17 @@
             "cStandard": "c17",
             "cppStandard": "c++14",
             "intelliSenseMode": "linux-gcc-arm"
+        },
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ]
         }
     ],
     "version": 4
