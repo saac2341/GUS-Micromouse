@@ -20,3 +20,15 @@ void pwm_derecho_init() {
     pwm_set_clkdiv(slice_num, (float)clock_get_hz(clk_sys) / (PWM_FREQUENCY * (PWM_MAX_DUTY_CYCLE + 1)));
     pwm_set_enabled(slice_num, true);
 }
+
+void pwm_set_izquierdo(uint16_t duty) {
+    uint slice_num = pwm_gpio_to_slice_num(MOTOR_LEFT_PWM_PIN);
+    uint channel = pwm_gpio_to_channel(MOTOR_LEFT_PWM_PIN);
+    pwm_set_chan_level(slice_num, channel,  duty);
+}
+
+void pwm_set_derecho(uint16_t duty) {
+    uint slice_num = pwm_gpio_to_slice_num(MOTOR_RIGHT_PWM_PIN);
+    uint channel = pwm_gpio_to_channel(MOTOR_RIGHT_PWM_PIN);
+    pwm_set_chan_level(slice_num, channel,  duty);
+}

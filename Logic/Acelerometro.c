@@ -16,14 +16,18 @@ void acelerometro_init() {
     gpio_set_dir(ACCELEROMETER_Y_PIN, GPIO_IN);
     gpio_pull_up(ACCELEROMETER_Y_PIN);
 }
+/// Lee los datos del acelerómetro y giroscopio, almacenándolos en una estructura de datos.
+acelerometro_data_t acelerometro_leer(void) {
+    acelerometro_data_t data;
+    //Aquí se deben implementar las funciones de lectura específicas para el sensor MPU5060, utilizando la comunicación I2C para obtener los valores de aceleración y velocidad angular en los ejes x, y, z.
+    data.ax = ACCELEROMETER_X_PIN;
+    data.ay = ACCELEROMETER_Y_PIN;
 
-void acelerometro_leer(float* ax, float* ay, float* az, float* gx, float* gy, float* gz) {
-    //Esta función se encarga de leer los datos del acelerómetro y giroscopio y almacenarlos en las variables correspondientes
-    //En este ejemplo se asignan valores ficticios para ilustrar el funcionamiento
-    *ax = 0.0; // Valor del eje x del acelerómetro
-    *ay = 0.0; // Valor del eje y del acelerómetro
-    *az = 0.0; // Valor del eje z del acelerómetro
-    *gx = 0.0; // Valor del eje x del giroscopio
-    *gy = 0.0; // Valor del eje y del giroscopio
-    *gz = 0.0; // Valor del eje z del giroscopio
+    //Coreccion para x
+    if (data.ax > 0.0) data.ax -= 0.1;
+    else data.ax += 0.1;
+    //Coreccion para y
+    if (data.ay > 0.0) data.ay -= 0.1;
+    else data.ay += 0.1;
+    return data;
 }

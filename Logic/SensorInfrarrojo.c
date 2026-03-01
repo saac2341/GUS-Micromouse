@@ -10,7 +10,7 @@ void sensor_infrarrojo_init_BACK() {
     gpio_pull_up(IR_BACK_PIN);
 }
 
-bool infrarrojo_leer_BACK(){
+bool infrarrojo_leer_BACK(void){
     return !gpio_get(IR_BACK_PIN);
 }
 /// Inicializa el sensor infrarrojo frontal, configurando el pin correspondiente como entrada con resistencia pull-up.
@@ -20,7 +20,9 @@ void sensor_infrarrojo_init_FRONT() {
     gpio_pull_up(IR_FRONT_PIN);
 }
 
-bool infrarrojo_leer_FRONT(){
+bool infrarrojo_leer_FRONT(void){
+    printf("Valor del sensor infrarrojo frontal: %d\n", 
+        !gpio_get(IR_FRONT_PIN));
     return !gpio_get(IR_FRONT_PIN);
 }
 /// Inicializa el sensor infrarrojo izquierdo, configurando el pin correspondiente como entrada con resistencia pull-up.
@@ -30,7 +32,9 @@ void sensor_infrarrojo_init_LEFT() {
     gpio_pull_up(IR_LEFT_PIN);
 }
 
-bool infrarrojo_leer_LEFT(){
+bool infrarrojo_leer_LEFT(void){
+    printf("Valor del sensor infrarrojo izquierdo: %d\n", 
+        !gpio_get(IR_LEFT_PIN));
     return !gpio_get(IR_LEFT_PIN);
 }
 /// Inicializa el sensor infrarrojo derecho, configurando el pin correspondiente como entrada con resistencia pull-up.
@@ -40,6 +44,8 @@ void sensor_infrarrojo_init_RIGHT() {
     gpio_pull_up(IR_RIGHT_PIN);
 }
 
-bool infrarrojo_leer_RIGHT(){
+bool infrarrojo_leer_RIGHT(void){
+    printf("Valor del sensor infrarrojo derecho: %d\n", 
+        !gpio_get(IR_RIGHT_PIN));
     return !gpio_get(IR_RIGHT_PIN);
 }
