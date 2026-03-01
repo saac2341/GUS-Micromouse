@@ -38,6 +38,7 @@ pico_sdk_init()
 file(GLOB SOURCES 
     "*.c"
     "Libreria/*.c"
+    "Logica/*.c"
 )
 add_executable(GUS-Micromouse ${SOURCES})
 

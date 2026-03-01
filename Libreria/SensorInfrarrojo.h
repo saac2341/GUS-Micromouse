@@ -1,7 +1,7 @@
 /*Libreria encargada de manejar los sensores infrarrojos del micromouse*/
 #ifndef SENSORINFRARROJO_H
 #define SENSORINFRARROJO_H
-#include "Default.h"
+#include "Temps/Default.h"
 #include <stdbool.h>
 
 void sensor_infrarrojo_init_BACK();

@@ -22,7 +22,7 @@ void direccion_derecha() {
     gpio_put(MOTOR_LEFT_DIR_PIN, 0); // Desactivar dirección izquierda
     gpio_put(MOTOR_RIGHT_DIR_PIN, 1); // Activar dirección derecha
 }
-void direccion_frente() {
+void direccion_adelante() {
     gpio_put(MOTOR_LEFT_DIR_PIN, 0); // Desactivar dirección izquierda
     gpio_put(MOTOR_RIGHT_DIR_PIN, 0); // Desactivar dirección derecha
 }
