@@ -8,44 +8,53 @@
 #include "Libreria/Direccion.h"
 #include "Temps/Default.h"
 
-int main()
-{
+int main(){
     stdio_init_all();
 
     // Inicialización
-    monitorizar_estado();
-    pwm_izquierdo_init();
-    pwm_derecho_init();
+    motores_init();
     direccion_init();
+    sensor_infrarrojo_init_BACK();
+    sensor_infrarrojo_init_FRONT();
+    sensor_infrarrojo_init_LEFT();
+    sensor_infrarrojo_init_RIGHT();
+    encoder_init();
+    acelerometro_init();
 
-    while (true)
-    {
-        if(sensor_infrarrojo_leer_FRONT()){
+    while (true){
+        monitorizar_estado();
+        if(infrarrojo_leer_FRONT()){
             direccion_adelante();
-            pwm_set_izquierdo(VELOCIDAD_MEDIA);
-            pwm_set_derecho(VELOCIDAD_MEDIA);
-        }
-        else if(sensor_infrarrojo_leer_LEFT()){
+            motor_set_speed(1, VELOCIDAD_MEDIA);
+            motor_set_speed(2, VELOCIDAD_MEDIA);
+            sleep_ms(10); // Avanzar un poco antes de verificar nuevamente
+
+        }else if(infrarrojo_leer_LEFT()){
             direccion_izquierda();
-            pwm_set_izquierdo(0);
-            pwm_set_derecho(VELOCIDAD_MEDIA);
+            motor_set_speed(1, 0);
+            motor_set_speed(2, VELOCIDAD_MEDIA);
+            sleep_ms(10); // estabilidad
         }
-        else if(sensor_infrarrojo_leer_RIGHT()){
+        else if(infrarrojo_leer_RIGHT()){
             direccion_derecha();
-            pwm_set_izquierdo(VELOCIDAD_MEDIA);
-            pwm_set_derecho(0);
+            motor_set_speed(1, VELOCIDAD_MEDIA);
+            motor_set_speed(2, 0);
+            sleep_ms(10); // estabilidad
         }
-        else if(sensor_infrarrojo_leer_BACK()){
+        else if(infrarrojo_leer_BACK()){
             direccion_atras();
-            pwm_set_izquierdo(VELOCIDAD_MEDIA);
-            pwm_set_derecho(VELOCIDAD_MEDIA);
+            motor_set_speed(1, VELOCIDAD_MEDIA);
+            motor_set_speed(2, VELOCIDAD_MEDIA);
+            sleep_ms(10); // Retroceder un poco antes de verificar nuevamente
         }
         else {
             direccion_parar();
-            pwm_set_izquierdo(0);
-            pwm_set_derecho(0);
+            motor_set_speed(1, 0);
+            motor_set_speed(2, 0);
+            sleep_ms(10); // estabilidad
         }
 
         sleep_ms(10); // estabilidad
     }
+    return 0;
 }

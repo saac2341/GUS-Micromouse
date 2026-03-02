@@ -3,11 +3,10 @@
 #define PWM_H
 #include "pico/stdlib.h"
 #include "Temps/Default.h"
-/// Definiciones de pines y parámetros para el control del PWM. 
-/// Control de PWM para los motores.
-void pwm_izquierdo_init();
-void pwm_derecho_init();
+/// Inicializacion de motores.
+void motores_init(void);
 
-void pwm_set_izquierdo(uint16_t duty_cycle);
-void pwm_set_derecho(uint16_t duty_cycle);
+///Control de velocidad del motor.
+void motor_set_speed(uint motor, float speed);
+
 #endif /* PWM_H */

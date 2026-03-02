@@ -1,34 +1,49 @@
-/*Logica para el control del PWM de los motores*/
-//Incluir las librerias necesarias
+// PWM.c
 #include "PWM.h"
 #include "Default.h"
-/// Inicializa el PWM para el motor izquierdo, configurando el pin correspondiente y estableciendo la frecuencia.
-void pwm_izquierdo_init() {
-    // Configurar el pin de PWM para el motor izquierdo
+#include <stdio.h>
+#include <stdint.h>
+#include "pico/stdlib.h"
+#include "hardware/gpio.h"
+#include "hardware/pwm.h"
+
+//variables para slinces.
+uint slice_left;
+uint slice_right;
+
+void motores_init(void){
+    //Configuracion de pines con PWM.
     gpio_set_function(MOTOR_LEFT_PWM_PIN, GPIO_FUNC_PWM);
-    uint slice_num = pwm_gpio_to_slice_num(MOTOR_LEFT_PWM_PIN);
-    pwm_set_wrap(slice_num, PWM_MAX_DUTY_CYCLE);
-    pwm_set_clkdiv(slice_num, (float)clock_get_hz(clk_sys) / (PWM_FREQUENCY * (PWM_MAX_DUTY_CYCLE + 1)));
-    pwm_set_enabled(slice_num, true);
-}
-/// Inicializa el PWM para el motor derecho, configurando el pin correspondiente y estableciendo la frecuencia.
-void pwm_derecho_init() {
-    // Configurar el pin de PWM para el motor derecho
     gpio_set_function(MOTOR_RIGHT_PWM_PIN, GPIO_FUNC_PWM);
-    uint slice_num = pwm_gpio_to_slice_num(MOTOR_RIGHT_PWM_PIN);
-    pwm_set_wrap(slice_num, PWM_MAX_DUTY_CYCLE);
-    pwm_set_clkdiv(slice_num, (float)clock_get_hz(clk_sys) / (PWM_FREQUENCY * (PWM_MAX_DUTY_CYCLE + 1)));
-    pwm_set_enabled(slice_num, true);
+
+    //Configurar slices de PWM para cada motor.
+    slice_left = pwm_gpio_to_slice_num(MOTOR_LEFT_PWM_PIN);
+    slice_right = pwm_gpio_to_slice_num(MOTOR_RIGHT_PWM_PIN);
+
+    //Configuracion de PWM.
+    pwm_set_wrap(slice_left, PWM_MAX_DUTY_CYCLE);
+    pwm_set_wrap(slice_right, PWM_MAX_DUTY_CYCLE);
+
+    pwm_set_clkdiv(slice_left, PWM_FREQUENCY);
+    pwm_set_clkdiv(slice_right, PWM_FREQUENCY);
+
+    ///iNICIALIZAR EN 0.
+    pwm_set_chan_level(slice_left, pwm_gpio_to_channel(MOTOR_LEFT_PWM_PIN), 0);
+    pwm_set_chan_level(slice_right, pwm_gpio_to_channel(MOTOR_RIGHT_PWM_PIN), 0);
+
+    //Habilitar PWM.
+    pwm_set_enabled(slice_left, true);
+    pwm_set_enabled(slice_right, true);
 }
 
-void pwm_set_izquierdo(uint16_t duty) {
-    uint slice_num = pwm_gpio_to_slice_num(MOTOR_LEFT_PWM_PIN);
-    uint channel = pwm_gpio_to_channel(MOTOR_LEFT_PWM_PIN);
-    pwm_set_chan_level(slice_num, channel,  duty);
-}
+void motor_set_speed(uint motor, float speed){
+    if(speed < 0) speed = 0;
+    if(speed > VELOCIDAD_MAX) speed = VELOCIDAD_MAX;
 
-void pwm_set_derecho(uint16_t duty) {
-    uint slice_num = pwm_gpio_to_slice_num(MOTOR_RIGHT_PWM_PIN);
-    uint channel = pwm_gpio_to_channel(MOTOR_RIGHT_PWM_PIN);
-    pwm_set_chan_level(slice_num, channel,  duty);
+    uint level= (uint)(speed * PWM_MAX_DUTY_CYCLE / VELOCIDAD_MAX);
+    if (motor == 1) { // Motor izquierdo
+        pwm_set_chan_level(slice_left, pwm_gpio_to_channel(MOTOR_LEFT_PWM_PIN), level);
+    } else if (motor == 2) { // Motor derecho
+        pwm_set_chan_level(slice_right, pwm_gpio_to_channel(MOTOR_RIGHT_PWM_PIN), level);
+    }
 }

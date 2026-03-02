@@ -10,8 +10,8 @@
 #define MOTOR_LEFT_PWM_PIN 5    
 #define MOTOR_RIGHT_PWM_PIN 6
 //Definicion de acerelometro
-#define ACCELEROMETER_X_PIN 21
-#define ACCELEROMETER_Y_PIN 22
+#define SCL_PIN 21
+#define SDA_PIN 22
 //Definición de pines para encoders
 #define ENCODER_LEFT_PIN 2
 #define ENCODER_RIGHT_PIN 3
@@ -19,8 +19,8 @@
 #define MOTOR_LEFT_DIR_PIN 7
 #define MOTOR_RIGHT_DIR_PIN 8
 //De valores de configuracion estandar para el PWM de ambos motores
-#define PWM_FREQUENCY 1000 // Frecuencia de PWM en Hz
-#define PWM_MAX_DUTY_CYCLE 65535 // Valor máximo de ciclo de trabajo para 16 bits
+#define PWM_FREQUENCY 125 // Frecuencia de PWM en Hz
+#define PWM_MAX_DUTY_CYCLE 1000 // Valor máximo de ciclo de trabajo para 16 bits
 
 #define DIAMETER_WHEEL 20.0 // Diámetro de la rueda en cm
 #define PULSES_PER_REVOLUTION_INICIAL 20 // Número de pulsos por revolución del encoder

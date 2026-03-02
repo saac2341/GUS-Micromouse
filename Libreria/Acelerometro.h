@@ -10,9 +10,6 @@ typedef struct {
     float ax; // Aceleración en el eje x
     float ay; // Aceleración en el eje y
     float az; // Aceleración en el eje z
-    float gx; // Velocidad angular en el eje x
-    float gy; // Velocidad angular en el eje y
-    float gz; // Velocidad angular en el eje z
 } acelerometro_data_t;
 
 void acelerometro_init();

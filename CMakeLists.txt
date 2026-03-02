@@ -38,7 +38,7 @@ pico_sdk_init()
 file(GLOB SOURCES 
     "*.c"
     "Libreria/*.c"
-    "Logica/*.c"
+    "Logic/*.c"
 )
 add_executable(GUS-Micromouse ${SOURCES})
 
@@ -51,11 +51,19 @@ pico_enable_stdio_usb(GUS-Micromouse 1)
 
 # Add the standard library to the build
 target_link_libraries(GUS-Micromouse
-        pico_stdlib)
-
+        pico_stdlib
+        hardware_i2c
+        hardware_pwm
+        hardware_adc
+        hardware_clocks
+        hardware_timer)   
 # Add the standard include files to the build
 target_include_directories(GUS-Micromouse PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}/Libreria
+    ${CMAKE_CURRENT_LIST_DIR}/Logic
+    ${CMAKE_CURRENT_LIST_DIR}/Temps
+    ${PICO_SDK_PATH}/src/rp2040/hardware_include
 )
 
 pico_add_extra_outputs(GUS-Micromouse)
