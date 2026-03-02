@@ -1,83 +1,115 @@
 #include "Encoder.h"
 #include "pico/stdlib.h"
 #include "Default.h"
+#include "hardware/gpio.h"
+#include "hardware/sync.h"
 #include <math.h>
 
-// Variables de estado del encoder (globales o en estructura)
-static struct {
-    int left_steps;
-    int right_steps;
-    int last_left;
-    int last_right;
-    uint32_t last_time;
-} encoder_state = {0};
+// Variables globales para contar los pasos de cada encoder
+static struct{
+volatile int32_t left_steps;
+volatile int32_t right_steps;
 
-void encoder_init() {
-    gpio_init(ENCODER_LEFT_PIN);
-    gpio_set_dir(ENCODER_LEFT_PIN, GPIO_IN);
-    gpio_pull_up(ENCODER_LEFT_PIN);
-    
-    gpio_init(ENCODER_RIGHT_PIN);
-    gpio_set_dir(ENCODER_RIGHT_PIN, GPIO_IN);
-    gpio_pull_up(ENCODER_RIGHT_PIN);
-    
-    // Inicializar estado
-    encoder_state.last_left = gpio_get(ENCODER_LEFT_PIN);
-    encoder_state.last_right = gpio_get(ENCODER_RIGHT_PIN);
-    encoder_state.last_time = 0;
+uint8_t last_left_A;
+uint8_t last_right_A;
+
+} encoder_state={0};
+
+//Callback para manejar las interrupciones de los encoders.
+void encoder_callback(uint gpio, uint32_t events){
+    if(gpio == ENCODER_LEFT_PIN_A){ //motor izquierdo
+        uint8_t A = gpio_get(ENCODER_LEFT_PIN_A);
+        uint8_t B = gpio_get(ENCODER_LEFT_PIN_B);
+        if(A != encoder_state.last_left_A){
+            if(B == A){
+                encoder_state.left_steps++;
+            }else{
+                encoder_state.left_steps--;
+            }
+            encoder_state.last_left_A = A;
+        }
+    }else if(gpio == ENCODER_RIGHT_PIN_A){//motor derecho
+        uint8_t A = gpio_get(ENCODER_RIGHT_PIN_A);
+        uint8_t B = gpio_get(ENCODER_RIGHT_PIN_B);
+        if(A != encoder_state.last_right_A){
+            if(B == A){
+                encoder_state.right_steps++;
+            }else{
+                encoder_state.right_steps--;
+            }
+            encoder_state.last_right_A = A;
+        }
+    }
+}
+//Inicializacion.
+void encoder_init(void){
+    //Motor izquierdo
+    gpio_init(ENCODER_LEFT_PIN_A);
+    gpio_set_dir(ENCODER_LEFT_PIN_A, GPIO_IN);
+    gpio_pull_up(ENCODER_LEFT_PIN_A);
+
+    gpio_init(ENCODER_LEFT_PIN_B);
+    gpio_set_dir(ENCODER_LEFT_PIN_B, GPIO_IN); 
+    gpio_pull_up(ENCODER_LEFT_PIN_B);
+
+    //Motor derecho
+    gpio_init(ENCODER_RIGHT_PIN_A);
+    gpio_set_dir(ENCODER_RIGHT_PIN_A, GPIO_IN);
+    gpio_pull_up(ENCODER_RIGHT_PIN_A);
+
+    gpio_init(ENCODER_RIGHT_PIN_B);
+    gpio_set_dir(ENCODER_RIGHT_PIN_B, GPIO_IN);
+    gpio_pull_up(ENCODER_RIGHT_PIN_B);
+
+    //guardar el estado inicial de los encoders
+    encoder_state.last_left_A = gpio_get(ENCODER_LEFT_PIN_A);
+    encoder_state.last_right_A = gpio_get(ENCODER_RIGHT_PIN_A);
+
+    //arctivar interrupciones para flancos 
+    gpio_set_irq_enabled_with_callback(
+        ENCODER_LEFT_PIN_A,
+        GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL,
+        true,
+        &encoder_callback
+    );
+    gpio_set_irq_enabled_with_callback(
+        ENCODER_RIGHT_PIN_A,
+        GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL,
+        true,
+        &encoder_callback
+    );
 }
 
-encoder_data_t encoder_leer(void) {
-    encoder_data_t data = {0};  // Inicializar a cero
+
+
+//Lectura de los encoders, devuelve una estructura con los pasos y distancia recorrida por cada rueda.
+encoder_data_t encoder_leer(void){
+    encoder_data_t data;
     
-    // Filtrar rebotes (ajustar según necesidad)
-    uint32_t current_time = to_ms_since_boot(get_absolute_time());
-    if (current_time - encoder_state.last_time < 5) {
-        // Mantener últimos valores
-        data.left_steps = encoder_state.left_steps;
-        data.right_steps = encoder_state.right_steps;
-        return data;
-    }
-    encoder_state.last_time = current_time;
-    
-    // Leer estado actual
-    int left_state = gpio_get(ENCODER_LEFT_PIN);
-    int right_state = gpio_get(ENCODER_RIGHT_PIN);
-    
-    // Detectar cambio (flanco)
-    if (encoder_state.last_left != left_state) {
-        // Determinar dirección basándose en el otro canal
-        if (left_state == encoder_state.last_right) {
-            encoder_state.left_steps++;
-        } else {
-            encoder_state.left_steps--;
-        }
-    }
-    
-    if (encoder_state.last_right != right_state) {
-        if (right_state == left_state) {
-            encoder_state.right_steps--;
-        } else {
-            encoder_state.right_steps++;
-        }
-    }
-    
-    encoder_state.last_left = left_state;
-    encoder_state.last_right = right_state;
-    
-    // Calcular distancia (circunferencia, no diámetro)
-    float circumference = M_PI * DIAMETER_WHEEL;
-    
-    data.left_steps = encoder_state.left_steps;
-    data.right_steps = encoder_state.right_steps;
-    data.left_distance = encoder_state.left_steps * circumference / PULSES_PER_REVOLUTION_INICIAL;
-    data.right_distance = encoder_state.right_steps * circumference / PULSES_PER_REVOLUTION_INICIAL;
-    
+    int32_t left;
+    int32_t right;
+
+    //Desactivar interrupciones.
+    uint32_t save= save_and_disable_interrupts();
+
+    left = encoder_state.left_steps;
+    right = encoder_state.right_steps;
+
+    restore_interrupts(save);
+    float circuference = M_PI * DIAMETER_WHEEL; // Circunferencia de la rueda en cm
+    data.left_steps = left;
+    data.right_steps = right;
+
+    data.left_distance = (left *circuference) / PULSES_PER_REVOLUTION_INICIAL; // Distancia recorrida por la rueda izquierda en cm
+    data.right_distance = (right * circuference) / PULSES_PER_REVOLUTION_INICIAL; // Distancia recorrida por la rueda derecha en cm
+
     return data;
 }
 
-// Función para reiniciar contadores
-void encoder_reset(void) {
+//reset.
+void encoder_reset(void){
+    uint32_t save = save_and_disable_interrupts();
     encoder_state.left_steps = 0;
     encoder_state.right_steps = 0;
+    restore_interrupts(save);
 }

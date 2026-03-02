@@ -19,11 +19,19 @@ void monitorizar_estado(void) {
         bool ir_back  = infrarrojo_leer_BACK();
 
         //impresora del estado de los sensores en forma de tabla.
-       printf("%d\t%d\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%d\n",
-        encoder_data.left_steps, encoder_data.right_steps,
-        encoder_data.left_distance, encoder_data.right_distance,
-        acelerometro_data.ax, acelerometro_data.ay, acelerometro_data.az,
-        ir_left + ir_right + ir_front + ir_back); 
-        sleep_ms(500); // Esperar medio segundo antes de la siguiente lectura
+        printf("L:%ld\tR:%ld\tDL:%.2f\tDR:%.2f\tAX:%.2f\tAY:%.2f\tAZ:%.2f\tIR:%d%d%d%d\n",
+                encoder_data.left_steps,
+                encoder_data.right_steps,
+                encoder_data.left_distance,
+                encoder_data.right_distance,
+                acelerometro_data.ax,
+                acelerometro_data.ay,
+                acelerometro_data.az,
+                ir_left,
+                ir_right,
+                ir_front,
+                ir_back);
+
+        sleep_ms(100); // Ajusta el tiempo de actualización según tus necesidades
     }
 }

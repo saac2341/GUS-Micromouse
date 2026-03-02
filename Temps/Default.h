@@ -10,11 +10,13 @@
 #define MOTOR_LEFT_PWM_PIN 5    
 #define MOTOR_RIGHT_PWM_PIN 6
 //Definicion de acerelometro
-#define SCL_PIN 21
-#define SDA_PIN 22
+#define SCL_PIN 17
+#define SDA_PIN 16
 //Definición de pines para encoders
-#define ENCODER_LEFT_PIN 2
-#define ENCODER_RIGHT_PIN 3
+#define ENCODER_LEFT_PIN_A 2
+#define ENCODER_LEFT_PIN_B 1
+#define ENCODER_RIGHT_PIN_A 4
+#define ENCODER_RIGHT_PIN_B 3
 //Definicion de pines para puente h
 #define MOTOR_LEFT_DIR_PIN 7
 #define MOTOR_RIGHT_DIR_PIN 8
