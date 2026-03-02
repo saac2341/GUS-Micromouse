@@ -39,6 +39,7 @@ file(GLOB SOURCES
     "*.c"
     "Libreria/*.c"
     "Logic/*.c"
+    "Memory/*.c"
 )
 add_executable(GUS-Micromouse ${SOURCES})
 
@@ -63,6 +64,7 @@ target_include_directories(GUS-Micromouse PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/Libreria
     ${CMAKE_CURRENT_LIST_DIR}/Logic
     ${CMAKE_CURRENT_LIST_DIR}/Temps
+    ${CMAKE_CURRENT_LIST_DIR}/Memory
     ${PICO_SDK_PATH}/src/rp2040/hardware_include
 )
 

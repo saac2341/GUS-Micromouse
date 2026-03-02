@@ -7,6 +7,7 @@
 #include "Libreria/PWM.h"
 #include "Libreria/Direccion.h"
 #include "Temps/Default.h"
+#include "Memory/maze.h"
 
 int main(){
     stdio_init_all();
@@ -22,26 +23,31 @@ int main(){
     acelerometro_init();
 
     while (true){
-        monitorizar_estado();
-        if(infrarrojo_leer_FRONT()){
+        //Funcon para monitorizar el estado del micromouse y actualizar el laberinto.
+        monitor_data_t data = monitor_leer_datos();
+        monitor_imprimir(data);
+        monitor_actualizar_laberinto(data);
+
+        //lógica de movimiento basada en los sensores infrarrojos.
+        if(data.ir.front){
             direccion_adelante();
             motor_set_speed(1, VELOCIDAD_MEDIA);
             motor_set_speed(2, VELOCIDAD_MEDIA);
             sleep_ms(10); // Avanzar un poco antes de verificar nuevamente
 
-        }else if(infrarrojo_leer_LEFT()){
+        }else if(data.ir.left){
             direccion_izquierda();
             motor_set_speed(1, 0);
             motor_set_speed(2, VELOCIDAD_MEDIA);
             sleep_ms(10); // estabilidad
         }
-        else if(infrarrojo_leer_RIGHT()){
+        else if(data.ir.right){
             direccion_derecha();
             motor_set_speed(1, VELOCIDAD_MEDIA);
             motor_set_speed(2, 0);
             sleep_ms(10); // estabilidad
         }
-        else if(infrarrojo_leer_BACK()){
+        else if(data.ir.back){
             direccion_atras();
             motor_set_speed(1, VELOCIDAD_MEDIA);
             motor_set_speed(2, VELOCIDAD_MEDIA);
@@ -54,7 +60,7 @@ int main(){
             sleep_ms(10); // estabilidad
         }
 
-        sleep_ms(10); // estabilidad
+        sleep_ms(20); // estabilidad
     }
     return 0;
 }
