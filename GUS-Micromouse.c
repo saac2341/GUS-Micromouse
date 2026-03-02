@@ -13,6 +13,7 @@ int main(){
     stdio_init_all();
 
     // Inicialización
+    maze_init();
     motores_init();
     direccion_init();
     sensor_infrarrojo_init_BACK();

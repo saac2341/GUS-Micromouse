@@ -18,8 +18,8 @@ typedef struct{
     ir_data_t ir;
     long encoder_left;
     long encoder_right;
-    float distance_left;
-    float distance_right;
+    float dist_left;
+    float dist_right;
     float ax;
     float ay;
     float az;
@@ -29,8 +29,8 @@ typedef struct{
 monitor_data_t monitor_leer_datos(void);
 
 // Función para imprimir el estado del micromouse
-void monitor_imprimir(void);
+void monitor_imprimir(monitor_data_t data);
 
 // Funcion para actualizar el estado del laberinto desde el monitor.
-void monitor_actualizar_laberinto(void);
+void monitor_actualizar_laberinto(monitor_data_t data);
 #endif

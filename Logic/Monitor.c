@@ -26,8 +26,8 @@ monitor_data_t monitor_leer_datos(void) {
 
     data.encoder_left = encoder_data.left_steps;
     data.encoder_right = encoder_data.right_steps;
-    data.distance_left = encoder_data.left_distance;
-    data.distance_right = encoder_data.right_distance;
+    data.dist_left = encoder_data.left_distance;
+    data.dist_right = encoder_data.right_distance;
     data.ax = acelerometro_data.ax;
     data.ay = acelerometro_data.ay;
     data.az = acelerometro_data.az;
@@ -43,8 +43,8 @@ void monitor_imprimir(monitor_data_t data) {
         printf("L:%ld\tR:%ld\tDL:%.2f\tDR:%.2f\tAX:%.2f\tAY:%.2f\tAZ:%.2f\tIR:%d%d%d%d\n",
                 data.encoder_left,
                 data.encoder_right,
-                data.distance_left,
-                data.distance_right,
+                data.dist_left,
+                data.dist_right,
                 data.ax,
                 data.ay,
                 data.az,
@@ -54,18 +54,18 @@ void monitor_imprimir(monitor_data_t data) {
                 data.ir.back);
 }
 
-void monitor_actualizar_laberinto(monitor_data_t d) {
+void monitor_actualizar_laberinto(monitor_data_t data) {
     // Actualizar el estado del laberinto basado en los sensores infrarrojos
-    if (d.ir.front) {
+    if (data.ir.front) {
         maze_set_wall(pos_x, pos_y, 0x01); // Pared al frente
     }
-    if (d.ir.right) {
+    if (data.ir.right) {
         maze_set_wall(pos_x, pos_y, 0x02); // Pared a la derecha
     }
-    if (d.ir.back) {
+    if (data.ir.back) {
         maze_set_wall(pos_x, pos_y, 0x04); // Pared atrás
     }
-    if (d.ir.left) {
+    if (data.ir.left) {
         maze_set_wall(pos_x, pos_y, 0x08); // Pared a la izquierda
     }
 }

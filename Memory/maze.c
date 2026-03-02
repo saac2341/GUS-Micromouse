@@ -3,7 +3,11 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "memory.h"
+#include "maze.h"
 
+//Inicializacion de X y Y del laberinto, para la memoria 
+int pos_x = 0;
+int pos_y = 0;
 // Definición de la estructura de una celda del laberinto
 Cell maze[MAZE_SIZE][MAZE_SIZE];
 
