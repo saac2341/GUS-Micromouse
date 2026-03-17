@@ -1,5 +1,5 @@
-/*Libreria enfocadad a la base de datos desde el monitor*/
 
+/*Libreria enfocadad a la base de datos desde el monitor*/
 #ifndef MAXE_H
 #define MAXE_H
 #include <stdio.h>

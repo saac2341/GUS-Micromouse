@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "memory.h"
+#include "maze.h"
 
 // Definición de la estructura de una celda del laberinto
 Cell maze[MAZE_SIZE][MAZE_SIZE];

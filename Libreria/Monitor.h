@@ -6,6 +6,9 @@ la memoria flash se borran cuando se apaga el pico*/
 #include "stdbool.h"
 #include "stdint.h"
 
+//Definir x_pos y y_pos como variables externas para mantener la posición actual del micromouse en el laberinto.
+extern int pos_x;
+extern int pos_y;
 //Estructura para sensores ir.
 typedef struct{
     bool front;
@@ -18,8 +21,8 @@ typedef struct{
     ir_data_t ir;
     long encoder_left;
     long encoder_right;
-    float distance_left;
-    float distance_right;
+    float dist_left;
+    float dist_right;
     float ax;
     float ay;
     float az;
@@ -29,8 +32,8 @@ typedef struct{
 monitor_data_t monitor_leer_datos(void);
 
 // Función para imprimir el estado del micromouse
-void monitor_imprimir(void);
+void monitor_imprimir(monitor_data_t data);
 
 // Funcion para actualizar el estado del laberinto desde el monitor.
-void monitor_actualizar_laberinto(void);
-#endif
+void monitor_actualizar_laberinto(monitor_data_t data);
+#endif /* MONITOR_H */

@@ -32,4 +32,14 @@
 #define VELOCIDAD_MEDIA (PWM_MAX_DUTY_CYCLE / 2) // Valor de ciclo de trabajo para el 75% de velocidad
 #define VELOCIDAD_BAJA (PWM_MAX_DUTY_CYCLE / 4) // Valor de ciclo de trabajo para el 25% de velocidad
 
+//Definicion de pines para Modulo SD LVC125a para guardar datos y chekpoins del laberinto 
+#define SD_CS_PIN 10
+#define SD_SCK_PIN 11
+#define SD_MOSI_PIN 12
+#define SD_MISO_PIN 13
+
+///Definir boton de estado inicial del robot
+#define BUTTON_PIN_INICIO 9
+
+
 #endif
