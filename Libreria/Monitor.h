@@ -36,8 +36,4 @@ void monitor_imprimir(monitor_data_t data);
 
 // Funcion para actualizar el estado del laberinto desde el monitor.
 void monitor_actualizar_laberinto(monitor_data_t data);
-<<<<<<< HEAD
 #endif /* MONITOR_H */
-=======
-#endif
->>>>>>> d22cfb466c89b98ae95b4d76a1866a732c0d705c
